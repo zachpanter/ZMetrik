@@ -12,5 +12,5 @@ CREATE TABLE metric(
     weight      INTEGER         NOT NULL,
     intensity   INTEGER         NOT NULL,
 
-    FOREIGN KEY (lift_id) REFERENCES lifts(id)
+    FOREIGN KEY (lift_id) REFERENCES lift(lift_id)
 );
