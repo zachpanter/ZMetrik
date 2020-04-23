@@ -5,10 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -43,7 +41,7 @@ public class SQLiteService {
 
     public Connection connect() {
 
-        String url = "jdbc:sqlite:sql/fitmetrix.db";
+        String url = "jdbc:sqlite:/home/blackjack/code/fitmetrix/sql/fitmetrix.db";
         SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl(url);
         Connection conn = null;
@@ -125,15 +123,34 @@ public class SQLiteService {
 
     public Boolean possibleNewPR(String liftTitle, Integer weight, Integer reps) {
         Integer currentOneRepMax = getCurrentOneRepMax(liftTitle);
-        Integer setOneRepMax = null; 
-        // TODO: Calculate one rep max
+        Integer setOneRepMax = calculateOneRepMax(reps, weight); 
 
         if (setOneRepMax > currentOneRepMax) {
-            updateCurrentOneRepMax(setOneRepMax);
+            updateCurrentOneRepMax(setOneRepMax, liftTitle);
+            return true;
+        } else {
+            return false;
         }
     }
 
-    public 
+    public void updateCurrentOneRepMax(Integer newOneRepMax, String liftTitle) {
+        String sql = "UPDATE lift SET current_one_rep_max = ? WHERE title = ?";
+        
+        try (
+            Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+        ) {
+            pstmt.setInt(1, newOneRepMax);
+            pstmt.setString(2, liftTitle);
+        } catch (Exception ex) {
+            System.out.println("There was an error updating the current one rep max");
+        }
+
+    }
+
+    public Integer calculateOneRepMax(Integer reps, Integer weight) {
+        return (Integer) (weight * (1 + (reps/30)));
+    }
 
 
 }

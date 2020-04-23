@@ -22,14 +22,16 @@ public class MetricController {
         return sqliteService.getCurrentOneRepMax(title);
     }
 
-    @GetMapping("/getTodaysVolumeForLift")
-    public Integer getTodaysVolumeForLift(@RequestParam(value="title") String title) {
-        return sqliteService.getTodaysVolumeForLift(title); // TODO: Implement for daily stats
-    }
+    // TODO: Implement for daily stats
+    // @GetMapping("/getTodaysVolumeForLift")
+    // public Integer getTodaysVolumeForLift(@RequestParam(value="title") String title) {
+    //     return sqliteService.getTodaysVolumeForLift(title); 
+    // }
 
-    @GetMapping("/getWeeksVolumeForLift")
-    public Integer getWeeksVolumeForLift(@RequestParam(value="title") String title) {
-        return sqliteService.getWeeksVolumeForLift(title); // TODO: Implement for weekly stats 
-    }
+    // TODO: Implement for weekly stats
+    // @GetMapping("/getWeeksVolumeForLift")
+    // public Integer getWeeksVolumeForLift(@RequestParam(value="title") String title) {
+    //     return sqliteService.getWeeksVolumeForLift(title);  
+    // }
 
 }

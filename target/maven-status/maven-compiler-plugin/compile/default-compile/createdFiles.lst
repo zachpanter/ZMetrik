@@ -1,2 +1,3 @@
-com/zachpanter/fitmetrics_api/SQLiteService.class
+com/zachpanter/fitmetrix_api/SQLiteService.class
+com/zachpanter/fitmetrix_api/MetricController.class
 com/zachpanter/fitmetrix_api/FitmetrixApiApplication.class
