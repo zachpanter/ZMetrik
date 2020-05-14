@@ -1,5 +1,6 @@
 package com.zachpanter.fitmetrix_api;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,14 +11,14 @@ public class MetricController {
 
     SQLiteService sqliteService;
     
-    @PostMapping("/addSet")
+    @PostMapping(value = "api/addSet")
     public void addSet( @RequestParam(value="liftTitle") String liftTitle,
                         @RequestParam(value="weight") Integer weight, 
                         @RequestParam(value="reps") Integer reps) {
         sqliteService.addSet(liftTitle, weight, reps);
     }
 
-    @GetMapping("/getOneRepMax")
+    @GetMapping(value = "api/getOneRepMax", produces = MediaType.APPLICATION_JSON_VALUE)
     public Integer getOneRepMax(@RequestParam(value="title") String title) {
         return sqliteService.getCurrentOneRepMax(title);
     }
