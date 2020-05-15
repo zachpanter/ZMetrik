@@ -50,7 +50,7 @@ def list_lifts(conn):
     sql = "SELECT lift_id, title FROM lift"
     cur = conn.cursor()
     resultset = cur.execute(sql)
-    
+    print()
 
 
 if __name__ == "__main__":
