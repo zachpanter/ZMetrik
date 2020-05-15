@@ -13,29 +13,43 @@ def create_connection():
     return conn
 
 
+def calc_one_rep_max(metrik):
+	return metrik.weight * (1 + (reps / 30))
+
+
+def get_current_one_rep_max(conn, lift_id)
+	sql = "SELECT current_one_rep_max FROM lift WHERE lift_id = ?"
+	cur = conn.cursor()
+	cur.execute(sql, lift_id)
+
+
+def possible_new_pr(conn, current_one_rep_max, metrik):
+	possible_pr = self.calculate_one_rep_max(metrik)
+
+	sql = "UPDATE lift SET current_one_rep_max = ? WHERE lift_id = ?"	
+
+	if (possible_pr > current_one_rep_max):
+		cur = conn.cursor()
+		sql_data = (possible_pr, metrik.lift_id)
+		cur.execute(sql, sql_data)		
+
+
 def insert_set(conn, metrik):
     sql = "INSERT INTO metric (lift_id, weight, reps, intensity) VALUES(?,?,?,?)"
-    current_one_rep_max = get_current_one_rep_max(metrik.lift_title)
-    liftId = get_lift_id(wset.lift_title)
+    
+	current_one_rep_max = self.get_current_one_rep_max(conn, metrik.lift_id)
     intensity = metrik.weight / current_one_rep_max
-    new_pr_reached = possible_new_pr(wset.lift_title, wset.weight, wset.reps)
+    possible_new_pr(conn, current_one_rep_max, metrik)
 
-    metrik = (liftId, metrik.weight, metrik.reps, intensity)
+    sql_data = (metrik.lift_id, metrik.weight, metrik.reps, intensity)
     cur = conn.cursor()
-    cur.execute(sql, metrik)
+    cur.execute(sql, sql_data)
 
 
-def get_lift_id(lift_title):
-    #TODO: Implement
-
-
-def main():
-    while True:
-        print("What was the weight?")
-        weight = Input()
-
-        print("What were the reps?")
-        reps = Input()
+def list_lifts(conn):
+	sql = "SELECT lift_id, title FROM lift"
+	cur = conn.cursor()
+	cur.execute(sql)
 
 
 if __name__ == "__main__":
@@ -49,10 +63,11 @@ if __name__ == "__main__":
         reps = Input()
         
         print("Which lift?")
-        
-        // TODO: Define metrik
-        
-        insert_set(conn, )
+		self.list_lifts()        
+		lift_id = Input()
+		
+		metrik = (lift_id, weight, reps)        
+        insert_set(conn, metrik)
 
         print("Input another? Y or N")
         answer = Input()
