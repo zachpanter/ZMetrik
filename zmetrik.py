@@ -1,9 +1,12 @@
 import sqlite3
 from sqlite3 import Error
+from collections import namedtuple
+import pdb
+from decimal import *
 
 
 def create_connection():
-    database = r"/home/blackjack/code/fitmetrix/sql/fitmetrix.db"
+    database = r"zmetrik.db"
     conn = None
     try:
         conn = sqlite3.connect(database)
@@ -14,43 +17,58 @@ def create_connection():
 
 
 def calc_one_rep_max(metrik):
-    return metrik.weight * (1 + (reps / 30))
+    weight = float(metrik[1])
+    reps = float(metrik[2])
+    #pdb.set_trace()
+    returnval = weight * (1 + (reps / 30))
+    return returnval
 
 
 def get_current_one_rep_max(conn, lift_id):
-    sql = "SELECT current_one_rep_max FROM lift WHERE lift_id = ?"
+    #pdb.set_trace()
+    sql = "SELECT current_one_rep_max FROM lifts WHERE lift_id = ?"
     cur = conn.cursor()
-    cur.execute(sql, lift_id)
+    cur.execute(sql, str(lift_id))
+    return cur.fetchone()[0]
 
 
 def possible_new_pr(conn, current_one_rep_max, metrik):
-    possible_pr = self.calculate_one_rep_max(metrik)
+    possible_pr = calc_one_rep_max(metrik)
 
-    sql = "UPDATE lift SET current_one_rep_max = ? WHERE lift_id = ?"    
+    sql = "UPDATE lifts SET current_one_rep_max = ? WHERE lift_id = ?"    
 
     if (possible_pr > current_one_rep_max):
         cur = conn.cursor()
-        sql_data = (possible_pr, metrik.lift_id)
-        cur.execute(sql, sql_data)        
+        sql_data = (possible_pr, metrik[0])
+        cur.execute(sql, sql_data)
+        conn.commit()
 
 
 def insert_set(conn, metrik):
-    sql = "INSERT INTO metric (lift_id, weight, reps, intensity) VALUES(?,?,?,?)"
-    
-    current_one_rep_max = self.get_current_one_rep_max(conn, metrik.lift_id)
-    intensity = metrik.weight / current_one_rep_max
-    possible_new_pr(conn, current_one_rep_max, metrik)
+    sql = "INSERT INTO metriks (lift_id, weight, reps, intensity) VALUES(?,?,?,?)"
+    #pdb.set_trace()
+    try:
+        current_one_rep_max = get_current_one_rep_max(conn, metrik[0])
+        getcontext().prec = 2
+        intensity = Decimal(metrik[1]) / Decimal(current_one_rep_max)
+        possible_new_pr(conn, current_one_rep_max, metrik)
 
-    sql_data = (metrik.lift_id, metrik.weight, metrik.reps, intensity)
-    cur = conn.cursor()
-    cur.execute(sql, sql_data)
-
+        sql_data = (metrik[0], metrik[1], metrik[2], float(intensity))
+        cur = conn.cursor()
+        pdb.set_trace()
+        cur.execute(sql, sql_data)
+        conn.commit()
+    except Error as e:
+        print(e)
 
 def list_lifts(conn):
-    sql = "SELECT lift_id, title FROM lift"
+    sql = "SELECT lift_id, title FROM lifts"
     cur = conn.cursor()
-    resultset = cur.execute(sql)
-    print()
+    cur.execute(sql)
+    rows = cur.fetchall()
+    
+    for row in rows:
+        print(row)
 
 
 if __name__ == "__main__":
@@ -67,10 +85,14 @@ if __name__ == "__main__":
         list_lifts(conn)
         lift_id = input()
         
-        metrik = (lift_id, weight, reps)        
+        #Metrik = namedtuple('metrik', 'lift_id weight reps')
+        #metrik = Metrik(lift_id, weight, reps)  
+        metrik = (lift_id, weight, reps) 
         insert_set(conn, metrik)
+        conn.close()
 
-        print("Input another? Y or N")
-        answer = input()
-        if (answer == "n"):
-            break
+        # pdb.set_trace()
+        # print("Input another? Y or N")
+        # answer = input()
+        # if (answer == "n"):
+        #     break
