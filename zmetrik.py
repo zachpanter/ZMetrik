@@ -3,7 +3,7 @@ from sqlite3 import Error
 
 
 def create_connection():
-    database = r"/home/blackjack/code/fitmetrix/sql/fitmetrix.db"
+    database = r"sql/fitmetrix.db"
     conn = None
     try:
         conn = sqlite3.connect(database)
@@ -37,7 +37,7 @@ def possible_new_pr(conn, current_one_rep_max, metrik):
 def insert_set(conn, metrik):
     sql = "INSERT INTO metric (lift_id, weight, reps, intensity) VALUES(?,?,?,?)"
     
-    current_one_rep_max = self.get_current_one_rep_max(conn, metrik.lift_id)
+    current_one_rep_max = get_current_one_rep_max(conn, metrik.lift_id)
     intensity = metrik.weight / current_one_rep_max
     possible_new_pr(conn, current_one_rep_max, metrik)
 
@@ -49,8 +49,10 @@ def insert_set(conn, metrik):
 def list_lifts(conn):
     sql = "SELECT lift_id, title FROM lift"
     cur = conn.cursor()
-    resultset = cur.execute(sql)
-    print()
+    cur.execute(sql)
+    rows = cur.fetchall()
+    for row in rows:
+        print(row)
 
 
 if __name__ == "__main__":
