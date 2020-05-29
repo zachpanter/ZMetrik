@@ -19,11 +19,21 @@ CREATE TABLE morphometriks(
     id          INTEGER         PRIMARY KEY AUTOINCREMENT,
     timestamp   INTEGER         DEFAULT CURRENT_TIMESTAMP,
     metrik_id   INTEGER         NOT NULL,
+    amt         REAL,
 
     FOREIGN KEY (metrik_id) REFERENCES metriks(id)
 );
 
 CREATE TABLE metriks(
     id          INTEGER         PRIMARY KEY AUTOINCREMENT,
-    title       VARCHAR         NOT NULL
+    title       VARCHAR         NOT NULL,
+    unit        VARCHAR         NOT NULL,
+);
+
+CREATE TABLE nahrung(
+    id          INTEGER         PRIMARY KEY AUTOINCREMENT,
+    TIMESTAMP   INTEGER         DEFAULT CURRENT_TIMESTAMP,
+    title       VARCHAR,
+    eiweiss     INTEGER,
+    kalorien    INTEGER
 );
