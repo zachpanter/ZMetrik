@@ -3,6 +3,23 @@ from sqlite3 import Error
 from collections import namedtuple
 import pdb
 from decimal import *
+from flask import Flask
+
+app = Flask(__name__)
+
+# TODO: IMPLEMENT
+@app.route("/api/morphometriks")
+def get_morphometrik_data()
+
+
+# TODO: IMPLEMENT
+@app.route("/api/nahrung")
+def get_nahrung_data()
+
+
+# TODO: IMPLEMENT
+@app.route("/api/rauminhalt")
+def get_rauminhalt_data()
 
 
 def create_connection():
