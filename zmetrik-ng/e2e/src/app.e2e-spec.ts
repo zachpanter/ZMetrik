@@ -8,10 +8,22 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getTitleText()).toEqual('zmetrik-ng app is running!');
+  // it('should display welcome message', () => {
+  //   page.navigateTo();
+  //   expect(page.getTitleText()).toEqual('zmetrik-ng app is running!');
+  // });
+
+  it('should allow entry of new food', () => {
+      // TODO: Implement
   });
+
+  it('should allow entry of new weightlifting sets', () => {
+    // TODO: Implement
+  });
+
+  it('should allow entry of new morphometric measurements', () => {
+    // TODO: Implement
+});
 
   afterEach(async () => {
     // Assert that there are no errors emitted from the browser
